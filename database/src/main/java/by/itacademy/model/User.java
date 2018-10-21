@@ -14,7 +14,4 @@ public class User {
     private Long id;
     private String name;
 
-    public String getName() {
-        return name;
-    }
 }

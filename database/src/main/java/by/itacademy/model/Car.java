@@ -14,7 +14,4 @@ public class Car {
     private Long id;
     private String brand;
 
-    public String getBrand() {
-        return brand;
-    }
 }
