@@ -14,7 +14,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Info {
 
-    @Column(name = "info")
     private String info;
 
 }

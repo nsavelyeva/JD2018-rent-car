@@ -32,17 +32,16 @@ public class Address implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "street_id")
     private Street street;
 
-    @Column(name = "building", nullable = false)
+    @Column(nullable = false)
     private String building;
 
-    @Column(name = "flat", nullable = false)
+    @Column(nullable = false)
     private String flat;
 
     public Address(Street street, String building, String flat) {

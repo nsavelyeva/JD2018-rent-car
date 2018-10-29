@@ -35,14 +35,13 @@ public class City implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @Column(name = "city", nullable = false)
+    @Column(nullable = false)
     private String city;
 
     @OneToMany(mappedBy = "city")

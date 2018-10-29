@@ -26,10 +26,9 @@ public class Color implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "color", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String color;
 
     public Color(String color) {

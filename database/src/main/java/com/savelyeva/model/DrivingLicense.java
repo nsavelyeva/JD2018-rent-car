@@ -32,7 +32,6 @@ public class DrivingLicense implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "serial_number", unique = true, nullable = false)
@@ -40,8 +39,8 @@ public class DrivingLicense implements BaseEntity<Long> {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "created_date", column = @Column(name = "issued_date")),
-            @AttributeOverride(name = "updated_date", column = @Column(name = "expire_date", nullable = false))
+            @AttributeOverride(name = "createdDate", column = @Column(name = "issued_date")),
+            @AttributeOverride(name = "updatedDate", column = @Column(name = "expire_date", nullable = false))
     })
     private Audit drivingPeriod;
 

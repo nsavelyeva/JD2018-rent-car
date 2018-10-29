@@ -34,7 +34,6 @@ public class PersonData implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @OneToOne
@@ -56,7 +55,7 @@ public class PersonData implements BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "passport", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String passport;
 
     @Column(name = "address_id")

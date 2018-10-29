@@ -26,10 +26,9 @@ public class Role implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "role", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String role;
 
     public Role(String role) {

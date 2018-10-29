@@ -32,14 +32,13 @@ public class Model implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 
-    @Column(name = "model", nullable = false)
+    @Column(nullable = false)
     private String model;
 
     public Model(Manufacturer manufacturer, String model) {

@@ -15,12 +15,12 @@ import java.time.Instant;
 public class Audit {
 
     @Column(name = "created_date", nullable = false)
-    private Instant created_date;
+    private Instant createdDate;
 
     @Column(name = "updated_date")
-    private Instant updated_date;
+    private Instant updatedDate;
 
     public Audit(Instant created_date) {
-        this.created_date = created_date;
+        this.createdDate = createdDate;
     }
 }

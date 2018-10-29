@@ -34,7 +34,6 @@ public class Rent implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,15 +46,15 @@ public class Rent implements BaseEntity<Long> {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "created_date", column = @Column(name = "start_date")),
-            @AttributeOverride(name = "updated_date", column = @Column(name = "end_date", nullable = false))
+            @AttributeOverride(name = "createdDate", column = @Column(name = "start_date")),
+            @AttributeOverride(name = "updatedDate", column = @Column(name = "end_date", nullable = false))
     })
     private Audit rentPeriod;
 
-    @Column(name = "cost", nullable = false)
+    @Column(nullable = false)
     private Integer cost;
 
-    @Column(name = "paid", nullable = false)
+    @Column(nullable = false)
     private Boolean paid;
 
     @Embedded

@@ -41,7 +41,7 @@ public class Street implements BaseEntity<Long> {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @Column(name = "street", nullable = false)
+    @Column(nullable = false)
     private String street;
 
     public Street(City city, String street) {
