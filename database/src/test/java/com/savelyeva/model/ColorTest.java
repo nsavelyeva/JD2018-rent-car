@@ -34,11 +34,12 @@ public class ColorTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
-        Color sessionColor = Color.builder()
-                .color("blue")
-                .build();
+
+        Color sessionColor = Color.builder().color("blue").build();
         Serializable savedId = session.save(sessionColor);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -46,11 +47,16 @@ public class ColorTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Color sessionColor = Color.builder().color("blue").build();
         session.save(sessionColor);
+
         session.evict(sessionColor);
+
         Color databaseColor = session.find(Color.class, sessionColor.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionColor, databaseColor);
     }
 }

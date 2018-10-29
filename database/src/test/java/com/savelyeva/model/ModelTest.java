@@ -34,11 +34,15 @@ public class ModelTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Manufacturer manufacturer = Manufacturer.builder().manufacturer("Toyota").build();
         session.save(manufacturer);
+
         Model sessionModel = Model.builder().manufacturer(manufacturer).model("Corola").build();
         Serializable savedId = session.save(sessionModel);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -46,13 +50,19 @@ public class ModelTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Manufacturer manufacturer = Manufacturer.builder().manufacturer("Ford").build();
         session.save(manufacturer);
+
         Model sessionModel = Model.builder().manufacturer(manufacturer).model("Focus").build();
         session.save(sessionModel);
+
         session.evict(sessionModel);
+
         Model databaseModel = session.find(Model.class, sessionModel.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionModel, databaseModel);
     }
 }

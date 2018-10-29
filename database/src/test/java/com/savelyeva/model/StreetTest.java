@@ -34,13 +34,18 @@ public class StreetTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Country country = Country.builder().country("The Netherlands").build();
         session.save(country);
+
         City city = City.builder().country(country).city("Amsterdam").build();
         session.save(city);
+
         Street sessionStreet = Street.builder().city(city).street("Kalverstraat").build();
         Serializable savedId = session.save(sessionStreet);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -48,15 +53,22 @@ public class StreetTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Country country = Country.builder().country("Беларусь").build();
         session.save(country);
+
         City city = City.builder().country(country).city("Минск").build();
         session.save(city);
+
         Street sessionStreet = Street.builder().city(city).street("пр. Независимости").build();
         session.save(sessionStreet);
+
         session.evict(sessionStreet);
+
         Street databaseStreet = session.find(Street.class, sessionStreet.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionStreet, databaseStreet);
     }
 }

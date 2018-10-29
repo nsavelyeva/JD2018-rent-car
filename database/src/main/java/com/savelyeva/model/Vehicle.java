@@ -21,6 +21,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +44,13 @@ public class Vehicle implements BaseEntity<Long> {
     @AttributeOverride(name = "info", column = @Column(name = "description"))
     private Info description;
 
-    @Column(name = "model_id", nullable = false)
-    private Integer idModel;
+    @ManyToOne
+    @JoinColumn(name = "model_id")
+    private Model model;
 
-    @Column(name = "color_id", nullable = false)
-    private Integer colorId;
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    private Color color;
 
     @Enumerated(EnumType.STRING)
     private Transmission transmission;
@@ -75,10 +78,10 @@ public class Vehicle implements BaseEntity<Long> {
     )
     private List<Person> persons = new ArrayList<>();
 
-    public Vehicle(Integer idModel, Integer colorId, Transmission transmission, Short producedYear,
+    public Vehicle(Model model, Color color, Transmission transmission, Short producedYear,
                    Integer fullPrice, Integer dayPrice, Audit audit) {
-        this.idModel = idModel;
-        this.colorId = colorId;
+        this.model = model;
+        this.color = color;
         this.transmission = transmission;
         this.producedYear = producedYear;
         this.fullPrice = fullPrice;

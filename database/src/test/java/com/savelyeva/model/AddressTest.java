@@ -34,15 +34,21 @@ public class AddressTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Country country = Country.builder().country("The Netherlands").build();
         session.save(country);
+
         City city = City.builder().country(country).city("Amsterdam").build();
         session.save(city);
+
         Street street = Street.builder().city(city).street("Kalverstraat").build();
         session.save(street);
+
         Address sessionAddress = Address.builder().street(street).building("121/1").flat("12a").build();
         Serializable savedId = session.save(sessionAddress);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -50,17 +56,24 @@ public class AddressTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Country country = Country.builder().country("Беларусь").build();
         session.save(country);
+
         City city = City.builder().country(country).city("Минск").build();
         session.save(city);
+
         Street street = Street.builder().city(city).street("пр. Независимости").build();
         session.save(street);
+
         Address sessionAddress = Address.builder().street(street).building("121/1").flat("12a").build();
         session.save(sessionAddress);
+
         session.evict(sessionAddress);
+
         Address databaseAddress = session.find(Address.class, sessionAddress.getId());
         session.getTransaction().commit();
+
         assertEquals(sessionAddress, databaseAddress);
     }
 }

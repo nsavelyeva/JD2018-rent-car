@@ -14,13 +14,13 @@ import java.time.Instant;
 @Embeddable
 public class Audit {
 
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date")
     private Instant createdDate;
 
     @Column(name = "updated_date")
     private Instant updatedDate;
 
-    public Audit(Instant created_date) {
+    public Audit(Instant createdDate) {
         this.createdDate = createdDate;
     }
 }

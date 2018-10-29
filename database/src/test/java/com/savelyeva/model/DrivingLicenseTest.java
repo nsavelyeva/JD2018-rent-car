@@ -35,14 +35,20 @@ public class DrivingLicenseTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
-        Audit drivingPeriod = Audit.builder().created_date(Instant.now()).updated_date(Instant.now()).build();
+
+        Audit drivingPeriod = Audit.builder()
+                .createdDate(Instant.now())
+                .updatedDate(Instant.now())
+                .build();
         DrivingLicense sessionDrivingLicense = DrivingLicense.builder()
                 .serialNumber("FF123456")
                 .drivingPeriod(drivingPeriod)
                 .category(Category.B)
                 .build();
         Serializable savedId = session.save(sessionDrivingLicense);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -50,16 +56,23 @@ public class DrivingLicenseTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
-        Audit drivingPeriod = Audit.builder().created_date(Instant.now()).updated_date(Instant.now()).build();
+        Audit drivingPeriod = Audit.builder()
+                .createdDate(Instant.now())
+                .updatedDate(Instant.now())
+                .build();
         DrivingLicense sessionDrivingLicense = DrivingLicense.builder()
                 .serialNumber("FF123456")
                 .drivingPeriod(drivingPeriod)
                 .category(Category.B)
                 .build();
         session.save(sessionDrivingLicense);
+
         session.evict(sessionDrivingLicense);
+
         DrivingLicense databaseDrivingLicense = session.find(DrivingLicense.class, sessionDrivingLicense.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionDrivingLicense, databaseDrivingLicense);
     }
 }

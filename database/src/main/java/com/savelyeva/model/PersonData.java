@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.Instant;
@@ -56,11 +57,13 @@ public class PersonData implements BaseEntity<Long> {
     @Column(unique = true, nullable = false)
     private String passport;
 
-    @Column(name = "address_id")
-    private Long addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @Column(name = "driving_license_id")
-    private Long drivingLicenseId;
+    @ManyToOne
+    @JoinColumn(name = "driving_license_id")
+    private DrivingLicense drivingLicense;
 
     public PersonData(Person person, String firstName, String lastName, Instant birthDate, Gender gender, String passport) {
         this.person = person;

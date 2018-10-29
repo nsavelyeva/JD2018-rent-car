@@ -36,12 +36,22 @@ public class PersonTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
+        Audit audit =  Audit.builder().createdDate(Instant.now()).build();
         Role role = Role.builder().role("Администратор").build();
         session.save(role);
-        Audit audit =  Audit.builder().created_date(Instant.now()).build();
-        Person sessionPerson =  Person.builder().role(role).login("person").password("secret").email("person@example.com").audit(audit).build();
+
+        Person sessionPerson =  Person.builder()
+                .role(role)
+                .login("person")
+                .password("secret")
+                .email("person@example.com")
+                .audit(audit)
+                .build();
         Serializable savedId = session.save(sessionPerson);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -49,14 +59,26 @@ public class PersonTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
+        Audit audit =  Audit.builder().createdDate(Instant.now()).build();
         Role role = Role.builder().role("Пользователь").build();
         session.save(role);
-        Audit audit =  Audit.builder().created_date(Instant.now()).build();
-        Person sessionPerson =  Person.builder().role(role).login("customer").password("secret").email("customer@example.com").audit(audit).build();
+
+        Person sessionPerson =  Person.builder()
+                .role(role)
+                .login("customer")
+                .password("secret")
+                .email("customer@example.com")
+                .audit(audit)
+                .build();
         session.save(sessionPerson);
+
         session.evict(sessionPerson);
+
         Person databasePerson = session.find(Person.class, sessionPerson.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionPerson, databasePerson);
     }
 }

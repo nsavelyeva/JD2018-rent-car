@@ -34,9 +34,12 @@ public class CountryTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Country sessionCountry = Country.builder().country("Египет").build();
         Serializable savedId = session.save(sessionCountry);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -44,11 +47,16 @@ public class CountryTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Country sessionCountry = Country.builder().country("Беларусь").build();
         session.save(sessionCountry);
+
         session.evict(sessionCountry);
+
         Country databaseCountry = session.find(Country.class, sessionCountry.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionCountry, databaseCountry);
     }
 }

@@ -19,7 +19,6 @@ import javax.persistence.Table;
 
 
 @Data
-@ToString(exclude = "manufacturer")
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
@@ -32,7 +31,7 @@ public class Model implements BaseEntity<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 

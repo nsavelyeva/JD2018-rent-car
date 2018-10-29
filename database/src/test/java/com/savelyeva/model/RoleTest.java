@@ -34,11 +34,12 @@ public class RoleTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
-        Role sessionRole = Role.builder()
-                .role("Модератор")
-                .build();
+
+        Role sessionRole = Role.builder().role("Модератор").build();
         Serializable savedId = session.save(sessionRole);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -46,11 +47,16 @@ public class RoleTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Role sessionRole = Role.builder().role("Модератор").build();
         session.save(sessionRole);
+
         session.evict(sessionRole);
+
         Role databaseRole = session.find(Role.class, sessionRole.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionRole, databaseRole);
     }
 }

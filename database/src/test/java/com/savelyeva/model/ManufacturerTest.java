@@ -34,9 +34,12 @@ public class ManufacturerTest {
     public void checkSaveEntity() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Manufacturer sessionManufacturer = Manufacturer.builder().manufacturer("Peugeot").build();
         Serializable savedId = session.save(sessionManufacturer);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -44,11 +47,16 @@ public class ManufacturerTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Manufacturer sessionManufacturer = Manufacturer.builder().manufacturer("МАЗ").build();
         session.save(sessionManufacturer);
+
         session.evict(sessionManufacturer);
+
         Manufacturer databaseManufacturer = session.find(Manufacturer.class, sessionManufacturer.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionManufacturer, databaseManufacturer);
     }
 }

@@ -68,14 +68,14 @@ CREATE TABLE IF NOT EXISTS vehicle (
 
 CREATE TABLE IF NOT EXISTS car (
     id BIGSERIAL PRIMARY KEY,
-    car_id BIGINT NOT NULL REFERENCES vehicle (id),
+    vehicle_id BIGINT NOT NULL REFERENCES vehicle (id),
     passengers_capacity SMALLINT NOT NULL,
     trunk_capacity SMALLINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS lorry (
     id BIGSERIAL PRIMARY KEY,
-    car_id BIGINT NOT NULL REFERENCES vehicle (id),
+    vehicle_id BIGINT NOT NULL REFERENCES vehicle (id),
     carrying_capacity INTEGER NOT NULL
 );
 
@@ -186,10 +186,10 @@ INSERT INTO vehicle (model_id, transmission, color_id, produced_year, full_price
     (3, 'MECHANIC', 2, 2001, 5200, 25, '2001-10-25'),
     (2, 'AUTOMATIC', 1, 2015, 18000, 90, '2015-11-20');
 
-INSERT INTO lorry (car_id, carrying_capacity) VALUES
+INSERT INTO lorry (vehicle_id, carrying_capacity) VALUES
     (1, 450000);
 
-INSERT INTO car (car_id, passengers_capacity, trunk_capacity) VALUES
+INSERT INTO car (vehicle_id, passengers_capacity, trunk_capacity) VALUES
     (2, 4, 300),
     (3, 4, 350),
     (4, 4, 350),

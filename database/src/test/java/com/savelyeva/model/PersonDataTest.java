@@ -39,13 +39,31 @@ public class PersonDataTest {
         session.beginTransaction();
         Role role = Role.builder().role("Администратор").build();
         session.save(role);
+
         Instant now = Instant.now();
-        Audit audit = Audit.builder().created_date(now).build();
-        Person person = Person.builder().role(role).login("person").password("secret").email("person@example.com").audit(audit).build();
+        Audit audit = Audit.builder().createdDate(now).build();
+
+        Person person = Person.builder()
+                .role(role)
+                .login("person")
+                .password("secret")
+                .email("person@example.com")
+                .audit(audit)
+                .build();
         session.save(person);
-        PersonData sessionPersonData = PersonData.builder().person(person).firstName("Natallia").lastName("Savelyeva").birthDate(now).gender(Gender.FEMALE).passport("AB123456").build();
+
+        PersonData sessionPersonData = PersonData.builder()
+                .person(person)
+                .firstName("Natallia")
+                .lastName("Savelyeva")
+                .birthDate(now)
+                .gender(Gender.FEMALE)
+                .passport("AB123456")
+                .build();
         Serializable savedId = session.save(sessionPersonData);
+
         session.getTransaction().commit();
+
         assertNotNull(savedId);
     }
 
@@ -53,17 +71,38 @@ public class PersonDataTest {
     public void checkGetById() {
         @Cleanup Session session = FACTORY.openSession();
         session.beginTransaction();
+
         Role role = Role.builder().role("Пользователь").build();
         session.save(role);
+
         Instant now = Instant.now();
-        Audit audit =  Audit.builder().created_date(Instant.now()).build();
-        Person person = Person.builder().role(role).login("natallia").password("secret").email("natallia@example.com").audit(audit).build();
+        Audit audit =  Audit.builder().createdDate(Instant.now()).build();
+
+        Person person = Person.builder()
+                .role(role)
+                .login("natallia")
+                .password("secret")
+                .email("natallia@example.com")
+                .audit(audit)
+                .build();
         session.save(person);
-        PersonData sessionPersonData = PersonData.builder().person(person).firstName("Natallia").lastName("Savelyeva").birthDate(now).gender(Gender.FEMALE).passport("CD123456").build();
+
+        PersonData sessionPersonData = PersonData.builder()
+                .person(person)
+                .firstName("Natallia")
+                .lastName("Savelyeva")
+                .birthDate(now)
+                .gender(Gender.FEMALE)
+                .passport("CD123456")
+                .build();
         session.save(sessionPersonData);
+
         session.evict(sessionPersonData);
+
         PersonData databasePersonData = session.find(PersonData.class, sessionPersonData.getId());
+
         session.getTransaction().commit();
+
         assertEquals(sessionPersonData, databasePersonData);
     }
 }
