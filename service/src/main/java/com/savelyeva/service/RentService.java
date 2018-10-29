@@ -1,12 +1,11 @@
 package com.savelyeva.service;
 
+import com.savelyeva.ConnectionManager;
 import com.savelyeva.model.Rent;
 import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.NoArgsConstructor;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 
@@ -16,9 +15,8 @@ public class RentService {
     private static final RentService INSTANCE = new RentService();
 
     public List<Rent> getAllRents() {
-        @Cleanup SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        @Cleanup Session session = sessionFactory.openSession();
-        List<Rent> rents = session.createQuery("select e from Rent e", Rent.class).list();
+        @Cleanup Session session = ConnectionManager.FACTORY.openSession();
+        List<Rent> rents = session.createQuery("select r from Rent r", Rent.class).list();
         return rents;
     }
 
