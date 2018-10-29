@@ -35,7 +35,6 @@ import java.util.List;
 @Entity
 @Table(name = "vehicle", schema = "rent_car")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Access(AccessType.FIELD)
 public class Vehicle implements BaseEntity<Long> {
 
     @Id

@@ -35,7 +35,6 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "person", schema = "rent_car")
-@Access(AccessType.FIELD)
 public class Person implements BaseEntity<Long> {
 
     @Id

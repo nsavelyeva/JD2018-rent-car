@@ -31,7 +31,6 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "city", schema = "rent_car")
-@Access(AccessType.FIELD)
 public class City implements BaseEntity<Long> {
 
     @Id

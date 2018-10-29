@@ -21,7 +21,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "lorry", schema = "rent_car")
 @PrimaryKeyJoinColumn(name = "car_id")
-@Access(AccessType.FIELD)
 public class Lorry extends Vehicle {
 
     @Column(name = "carrying_capacity", nullable = false)

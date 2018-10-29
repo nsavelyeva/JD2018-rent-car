@@ -22,7 +22,6 @@ import javax.persistence.Table;
 @Builder
 @Entity
 @Table(name = "manufacturer", schema = "rent_car")
-@Access(AccessType.FIELD)
 public class Manufacturer implements BaseEntity<Integer> {
 
     @Id

@@ -30,7 +30,6 @@ import java.time.Instant;
 @Builder
 @Entity
 @Table(name = "person_data", schema = "rent_car")
-@Access(AccessType.FIELD)
 public class PersonData implements BaseEntity<Long> {
 
     @Id
