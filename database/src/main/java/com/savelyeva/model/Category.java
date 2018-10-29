@@ -2,7 +2,7 @@ package com.savelyeva.model;
 
 public enum Category {
     A,
-    Am,
+    AM,
     B,
     C,
     D,
