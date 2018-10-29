@@ -25,9 +25,6 @@
             <groupId>net.sourceforge.cobertura</groupId>
             <artifactId>cobertura</artifactId>
         </dependency>
-
-
-
     </dependencies>
 
 </project>
