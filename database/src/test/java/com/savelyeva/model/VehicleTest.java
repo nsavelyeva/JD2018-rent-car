@@ -1,11 +1,12 @@
 package com.savelyeva.model;
 
+import com.savelyeva.util.CreateTestData;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -17,59 +18,31 @@ import static org.junit.Assert.assertEquals;
 
 public class VehicleTest {
 
-    private static final SessionFactory FACTORY = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory sessionFactory;
+
+    @BeforeClass
+    public static void initDb() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        CreateTestData.getInstance().importTestData(sessionFactory);
+    }
 
     @AfterClass
     public static void closeFactory() {
-        FACTORY.close();
-    }
-
-    @Before
-    public void clean() {
-        try (Session session = FACTORY.openSession()) {
-            session.beginTransaction();
-            session.createQuery("delete from Vehicle ").executeUpdate();
-            session.createQuery("delete from Car ").executeUpdate();
-            session.createQuery("delete from Lorry ").executeUpdate();
-            session.getTransaction().commit();
-        }
+        sessionFactory.close();
     }
 
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Audit audit = new Audit(Instant.now());
-        Color color = Color.builder()
-                .color("yellow")
-                .build();
-        session.save(color);
-
-        Manufacturer manufacturerCar = Manufacturer.builder()
-                .manufacturer("Nissan")
-                .build();
-        session.save(manufacturerCar);
-
-        Model modelCar = Model.builder()
-                .manufacturer(manufacturerCar)
-                .model("Juke")
-                .build();
-        session.save(modelCar);
+        Color color = session.find(Color.class, 1);
+        Model modelCar = session.find(Model.class, 1);
+        Model modelLorry = session.find(Model.class, 2);
 
         Vehicle vehicleCar = new Vehicle(modelCar, color, Transmission.AUTOMATIC, Short.valueOf("2017"), 12000, 60, audit);
         session.save(vehicleCar);
-
-        Manufacturer manufacturerLorry = Manufacturer.builder()
-                .manufacturer("БелАЗ")
-                .build();
-        session.save(manufacturerLorry);
-
-        Model modelLorry = Model.builder()
-                .manufacturer(manufacturerLorry)
-                .model("БелАЗ-75710")
-                .build();
-        session.save(modelLorry);
 
         Vehicle vehicleLorry = new Vehicle(modelLorry, color, Transmission.MECHANIC, Short.valueOf("2013"), 100000, 500, audit);
         session.save(vehicleLorry);
@@ -88,40 +61,16 @@ public class VehicleTest {
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Audit audit = new Audit(Instant.now());
-
-        Color color = Color.builder()
-                .color("жёлтый")
-                .build();
-        session.save(color);
-
-        Manufacturer manufacturerCar = Manufacturer.builder()
-                .manufacturer("Toyota")
-                .build();
-        session.save(manufacturerCar);
-
-        Model modelCar = Model.builder()
-                .manufacturer(manufacturerCar)
-                .model("RAV4")
-                .build();
-        session.save(modelCar);
+        Color color = session.find(Color.class, 1);
+        Model modelCar = session.find(Model.class, 1);
+        Model modelLorry = session.find(Model.class, 2);
 
         Vehicle vehicleCar = new Vehicle(modelCar, color, Transmission.AUTOMATIC, Short.valueOf("2017"), 12000, 60, audit);
         session.save(vehicleCar);
-
-        Manufacturer manufacturerLorry = Manufacturer.builder()
-                .manufacturer("МАЗ")
-                .build();
-        session.save(manufacturerLorry);
-
-        Model modelLorry = Model.builder()
-                .manufacturer(manufacturerLorry)
-                .model("МАЗ-6517 X9-410")
-                .build();
-        session.save(modelLorry);
 
         Vehicle vehicleLorry = new Vehicle(modelLorry, color, Transmission.MECHANIC, Short.valueOf("2013"), 100000, 500, audit);
         session.save(vehicleLorry);

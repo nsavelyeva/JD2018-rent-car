@@ -1,11 +1,12 @@
 package com.savelyeva.model;
 
+import com.savelyeva.util.CreateTestData;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -16,47 +17,31 @@ import static org.junit.Assert.assertEquals;
 
 public class PersonDataTest {
 
-    private static final SessionFactory FACTORY = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory sessionFactory;
+
+    @BeforeClass
+    public static void initDb() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        CreateTestData.getInstance().importTestData(sessionFactory);
+    }
 
     @AfterClass
     public static void closeFactory() {
-        FACTORY.close();
-    }
-
-    @Before
-    public void clean() {
-        @Cleanup Session session = FACTORY.openSession();
-        session.beginTransaction();
-        session.createQuery("DELETE FROM PersonData").executeUpdate();
-        session.createQuery("DELETE FROM Person").executeUpdate();
-        session.createQuery("DELETE FROM Role").executeUpdate();
-        session.getTransaction().commit();
+        sessionFactory.close();
     }
 
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
-        Role role = Role.builder().role("Администратор").build();
-        session.save(role);
 
-        Instant now = Instant.now();
-        Audit audit = Audit.builder().createdDate(now).build();
-
-        Person person = Person.builder()
-                .role(role)
-                .login("person")
-                .password("secret")
-                .email("person@example.com")
-                .audit(audit)
-                .build();
-        session.save(person);
+        Person person = session.find(Person.class, 1L);
 
         PersonData sessionPersonData = PersonData.builder()
                 .person(person)
                 .firstName("Natallia")
                 .lastName("Savelyeva")
-                .birthDate(now)
+                .birthDate(Instant.now())
                 .gender(Gender.FEMALE)
                 .passport("AB123456")
                 .build();
@@ -69,29 +54,16 @@ public class PersonDataTest {
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Role role = Role.builder().role("Пользователь").build();
-        session.save(role);
-
-        Instant now = Instant.now();
-        Audit audit =  Audit.builder().createdDate(Instant.now()).build();
-
-        Person person = Person.builder()
-                .role(role)
-                .login("natallia")
-                .password("secret")
-                .email("natallia@example.com")
-                .audit(audit)
-                .build();
-        session.save(person);
+        Person person = session.find(Person.class, 2L);
 
         PersonData sessionPersonData = PersonData.builder()
                 .person(person)
                 .firstName("Natallia")
                 .lastName("Savelyeva")
-                .birthDate(now)
+                .birthDate(Instant.now())
                 .gender(Gender.FEMALE)
                 .passport("CD123456")
                 .build();

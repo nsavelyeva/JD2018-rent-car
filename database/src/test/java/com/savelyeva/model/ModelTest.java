@@ -1,11 +1,12 @@
 package com.savelyeva.model;
 
+import com.savelyeva.util.CreateTestData;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -15,30 +16,27 @@ import static org.junit.Assert.assertEquals;
 
 public class ModelTest {
 
-    private static final SessionFactory FACTORY = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory sessionFactory;
+
+    @BeforeClass
+    public static void initDb() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        CreateTestData.getInstance().importTestData(sessionFactory);
+    }
 
     @AfterClass
     public static void closeFactory() {
-        FACTORY.close();
-    }
-
-    @Before
-    public void clean() {
-        @Cleanup Session session = FACTORY.openSession();
-        session.beginTransaction();
-        session.createQuery("DELETE FROM Model").executeUpdate();
-        session.getTransaction().commit();
+        sessionFactory.close();
     }
 
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Manufacturer manufacturer = Manufacturer.builder().manufacturer("Toyota").build();
-        session.save(manufacturer);
+        Manufacturer manufacturer = session.find(Manufacturer.class, 1);
 
-        Model sessionModel = Model.builder().manufacturer(manufacturer).model("Corola").build();
+        Model sessionModel = Model.builder().manufacturer(manufacturer).model("Q5").build();
         Serializable savedId = session.save(sessionModel);
 
         session.getTransaction().commit();
@@ -48,13 +46,12 @@ public class ModelTest {
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Manufacturer manufacturer = Manufacturer.builder().manufacturer("Ford").build();
-        session.save(manufacturer);
+        Manufacturer manufacturer = session.find(Manufacturer.class, 1);
 
-        Model sessionModel = Model.builder().manufacturer(manufacturer).model("Focus").build();
+        Model sessionModel = Model.builder().manufacturer(manufacturer).model("Q6").build();
         session.save(sessionModel);
 
         session.evict(sessionModel);
