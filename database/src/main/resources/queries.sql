@@ -280,3 +280,65 @@ SELECT * FROM role;
 SELECT * FROM rent;
 
 
+select
+        person0_.id as id1_9_0_,
+        person0_.created_date as created_2_9_0_,
+        person0_.updated_date as updated_3_9_0_,
+        person0_.email as email4_9_0_,
+        person0_.login as login5_9_0_,
+        person0_.password as password6_9_0_,
+        person0_.role_id as role_id7_9_0_,
+        role1_.id as id1_12_1_,
+        role1_.role as role2_12_1_,
+        persondata2_.id as id1_10_2_,
+        persondata2_.address_id as address_8_10_2_,
+        persondata2_.birth_date as birth_da2_10_2_,
+        persondata2_.driving_license_id as driving_9_10_2_,
+        persondata2_.first_name as first_na3_10_2_,
+        persondata2_.gender as gender4_10_2_,
+        persondata2_.last_name as last_nam5_10_2_,
+        persondata2_.middle_name as middle_n6_10_2_,
+        persondata2_.passport as passport7_10_2_,
+        persondata2_.person_id as person_10_10_2_,
+        address3_.id as id1_0_3_,
+        address3_.building as building2_0_3_,
+        address3_.flat as flat3_0_3_,
+        address3_.street_id as street_i4_0_3_,
+        street4_.id as id1_13_4_,
+        street4_.city_id as city_id3_13_4_,
+        street4_.street as street2_13_4_,
+        city5_.id as id1_2_5_,
+        city5_.city as city2_2_5_,
+        city5_.country_id as country_3_2_5_,
+        country6_.id as id1_4_6_,
+        country6_.country as country2_4_6_,
+        drivinglic7_.id as id1_5_7_,
+        drivinglic7_.category as category2_5_7_,
+        drivinglic7_.issued_date as issued_d3_5_7_,
+        drivinglic7_.expire_date as expire_d4_5_7_,
+        drivinglic7_.serial_number as serial_n5_5_7_
+    from
+        rent_car.person person0_
+    left outer join
+        rent_car.role role1_
+            on person0_.role_id=role1_.id
+    left outer join
+        rent_car.person_data persondata2_
+            on person0_.id=persondata2_.person_id
+    left outer join
+        rent_car.address address3_
+            on persondata2_.address_id=address3_.id
+    left outer join
+        rent_car.street street4_
+            on address3_.street_id=street4_.id
+    left outer join
+        rent_car.city city5_
+            on street4_.city_id=city5_.id
+    left outer join
+        rent_car.country country6_
+            on city5_.country_id=country6_.id
+    left outer join
+        rent_car.driving_license drivinglic7_
+            on persondata2_.driving_license_id=drivinglic7_.id
+    where
+        person0_.id=1

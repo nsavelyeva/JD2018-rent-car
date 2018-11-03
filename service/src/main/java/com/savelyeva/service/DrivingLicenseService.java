@@ -1,7 +1,7 @@
 package com.savelyeva.service;
 
-import com.savelyeva.ConnectionManager;
 import com.savelyeva.model.DrivingLicense;
+import com.savelyeva.connection.ConnectionManager;
 import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class DrivingLicenseService {
     private static final DrivingLicenseService INSTANCE = new DrivingLicenseService();
 
     public List<DrivingLicense> getAllDrivingLicenses() {
-        @Cleanup Session session = ConnectionManager.FACTORY.openSession();
+        @Cleanup Session session = ConnectionManager.getFactory().openSession();
         List<DrivingLicense> drivingLicenses = session.createQuery("select d from DrivingLicense d", DrivingLicense.class).list();
         return drivingLicenses;
     }

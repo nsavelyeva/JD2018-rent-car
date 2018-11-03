@@ -1,7 +1,7 @@
 package com.savelyeva.service;
 
-import com.savelyeva.ConnectionManager;
 import com.savelyeva.model.Vehicle;
+import com.savelyeva.connection.ConnectionManager;
 import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class VehicleService {
     private static final VehicleService INSTANCE = new VehicleService();
 
     public List<Vehicle> getAllVehicles() {
-        @Cleanup Session session = ConnectionManager.FACTORY.openSession();
+        @Cleanup Session session = ConnectionManager.getFactory().openSession();
         List<Vehicle> vehicles = session.createQuery("select v from Vehicle v", Vehicle.class).list();
         return vehicles;
     }
