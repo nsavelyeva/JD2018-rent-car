@@ -14,13 +14,14 @@ public class DrivingLicenseService {
 
     private static final DrivingLicenseService INSTANCE = new DrivingLicenseService();
 
+    public static DrivingLicenseService getInstance() {
+        return INSTANCE;
+    }
+
     public List<DrivingLicense> getAllDrivingLicenses() {
         @Cleanup Session session = ConnectionManager.getFactory().openSession();
         List<DrivingLicense> drivingLicenses = session.createQuery("select d from DrivingLicense d", DrivingLicense.class).list();
         return drivingLicenses;
     }
 
-    public static DrivingLicenseService getInstance() {
-        return INSTANCE;
-    }
 }

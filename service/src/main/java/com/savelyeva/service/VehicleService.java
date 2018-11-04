@@ -14,13 +14,14 @@ public class VehicleService {
 
     private static final VehicleService INSTANCE = new VehicleService();
 
+    public static VehicleService getInstance() {
+        return INSTANCE;
+    }
+
     public List<Vehicle> getAllVehicles() {
         @Cleanup Session session = ConnectionManager.getFactory().openSession();
         List<Vehicle> vehicles = session.createQuery("select v from Vehicle v", Vehicle.class).list();
         return vehicles;
     }
 
-    public static VehicleService getInstance() {
-        return INSTANCE;
-    }
 }

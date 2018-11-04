@@ -16,10 +16,6 @@ public abstract class BaseDaoImpl<P extends Serializable, E extends BaseEntity<P
 
     private Class<E> clazz;
 
-//    public BaseDaoImpl(Class<E> clazz) {
-//        this.clazz = clazz;
-//    }
-
     @SuppressWarnings("unchecked")
     public BaseDaoImpl() {
         ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
@@ -36,13 +32,17 @@ public abstract class BaseDaoImpl<P extends Serializable, E extends BaseEntity<P
     @Override
     public void update(E entity) {
         @Cleanup Session session = getSession();
+        session.beginTransaction();
         session.update(entity);
+        session.getTransaction().commit();
     }
 
     @Override
     public void delete(E entity) {
         @Cleanup Session session = getSession();
+        session.beginTransaction();
         session.delete(entity);
+        session.getTransaction().commit();
     }
 
     @Override
@@ -60,9 +60,6 @@ public abstract class BaseDaoImpl<P extends Serializable, E extends BaseEntity<P
         criteria.select(criteria.from(clazz));
 
         return session.createQuery(criteria).list();
-
-//        return session.createQuery(format("select e from %s e", clazz.getSimpleName()), clazz).list();
     }
 
-//    public abstract Class<E> getEntityClass();
 }

@@ -1,14 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html xmlns:c="http://java.sun.com/jsp/jstl/core">
-<head>
-    <title>List Elements</title>
-</head>
-<body>
-    <ul>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ include file="include/begin-html.jsp" %>
+
+    <ol start="${requestScope.start}">
         <c:forEach items="${requestScope.elements}" var="item">
         <li>${item}</li>
         </c:forEach>
-    </ul>
-</body>
-</html>
+    </ol>
+
+<%@ include file="include/end-html.jsp" %>

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +17,6 @@ import javax.persistence.Table;
 
 
 @Data
-@ToString(exclude = "street")
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor

@@ -2,8 +2,8 @@ package com.savelyeva.model;
 
 import java.io.Serializable;
 
-public interface BaseEntity<PK extends Serializable> {
+public interface BaseEntity<P extends Serializable> {
 
-    PK getId();
+    P getId();
 }
 

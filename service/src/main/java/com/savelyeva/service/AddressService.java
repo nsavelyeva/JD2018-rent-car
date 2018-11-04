@@ -14,13 +14,14 @@ public class AddressService {
 
     private static final AddressService INSTANCE = new AddressService();
 
+    public static AddressService getInstance() {
+        return INSTANCE;
+    }
+
     public List<Address> getAllAddresses() {
         @Cleanup Session session = ConnectionManager.getFactory().openSession();
         List<Address> addresses = session.createQuery("select a from Address a", Address.class).list();
         return addresses;
     }
 
-    public static AddressService getInstance() {
-        return INSTANCE;
-    }
 }

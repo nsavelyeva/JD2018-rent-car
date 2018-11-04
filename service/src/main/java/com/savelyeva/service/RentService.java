@@ -14,13 +14,14 @@ public class RentService {
 
     private static final RentService INSTANCE = new RentService();
 
+    public static RentService getInstance() {
+        return INSTANCE;
+    }
+
     public List<Rent> getAllRents() {
         @Cleanup Session session = ConnectionManager.getFactory().openSession();
         List<Rent> rents = session.createQuery("select r from Rent r", Rent.class).list();
         return rents;
     }
 
-    public static RentService getInstance() {
-        return INSTANCE;
-    }
 }
