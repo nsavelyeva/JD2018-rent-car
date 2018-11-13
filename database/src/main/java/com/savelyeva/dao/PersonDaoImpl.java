@@ -10,6 +10,7 @@ import com.savelyeva.model.Person;
 import com.savelyeva.model.QPersonData;
 import com.savelyeva.model.QStreet;
 import lombok.Cleanup;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -29,16 +30,15 @@ public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDa
         @Cleanup Session session = getSession();
 
         BooleanBuilder predicate = new BooleanBuilder();
-        if (!"".equals(email)) {
+        if (!StringUtils.isEmpty(email)) {
             predicate = predicate.and(QPerson.person.email.eq(email));
         }
-        if (!"".equals(gender)) {
+        if (!StringUtils.isEmpty(gender)) {
             predicate = predicate.and(QPersonData.personData.gender.stringValue().eq(gender));
         }
-        if (!"".equals(foreigners)) {
+        if (!StringUtils.isEmpty(foreigners)) {
             predicate = predicate.and(QCountry.country1.country.eq("Belarus"));
         }
-
         return new JPAQuery<Person>(session)
                 .select(QPerson.person)
                 .from(QPerson.person)
