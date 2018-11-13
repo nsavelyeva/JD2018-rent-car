@@ -37,7 +37,7 @@ public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDa
             predicate = predicate.and(QPersonData.personData.gender.stringValue().eq(gender));
         }
         if (!StringUtils.isEmpty(foreigners)) {
-            predicate = predicate.and(QCountry.country1.country.eq("Belarus"));
+            predicate = predicate.and(QCountry.country1.country.ne("Belarus"));
         }
         return new JPAQuery<Person>(session)
                 .select(QPerson.person)
