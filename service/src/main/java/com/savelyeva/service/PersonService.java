@@ -2,11 +2,14 @@ package com.savelyeva.service;
 
 import com.savelyeva.dao.PersonDao;
 import com.savelyeva.dao.PersonDaoImpl;
+import com.savelyeva.dto.PaginationDto;
+import com.savelyeva.dto.PersonDto;
 import com.savelyeva.model.Person;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PersonService {
@@ -29,9 +32,9 @@ public class PersonService {
         return person;
     }
 
-    public List<Person> findByAttributes(String email, String gender, String country, Integer limit, Integer page) {
+    public List<Person> findByAttributes(PersonDto personDto, PaginationDto paginationDto) {
         PersonDao personDao = PersonDaoImpl.getInstance();
-        List<Person> persons = personDao.findByAttributes(email, gender, country, limit, page);
+        List<Person> persons = personDao.findByAttributes(personDto, paginationDto);
         return persons;
     }
 

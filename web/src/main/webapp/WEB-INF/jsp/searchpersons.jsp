@@ -17,9 +17,9 @@ Person search form
     <br>
     <input type="checkbox" name="foreigners"> Foreigners only
     <br>
-    <input type="text" name="limit" value="5">
+    Limit: <input type="text" name="limit" value="5">
     <br>
-    <input type="text" name="page" value="1">
+    Page: <input type="text" name="page" value="1">
     <br>
     <input type="submit">
 </form>

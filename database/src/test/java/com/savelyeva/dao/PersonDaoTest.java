@@ -1,10 +1,13 @@
 package com.savelyeva.dao;
 
 import com.savelyeva.connection.ConnectionManager;
+import com.savelyeva.dto.PaginationDto;
+import com.savelyeva.dto.PersonDto;
 import com.savelyeva.model.Audit;
 import com.savelyeva.model.Person;
 import com.savelyeva.model.Role;
 import com.savelyeva.util.CreateTestData;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -107,8 +110,17 @@ public class PersonDaoTest {
 
     @Test
     public void checkFindByAttributes() {
+        PersonDto personDto = PersonDto.builder()
+                .email(StringUtils.EMPTY)
+                .gender("FEMALE")
+                .foreigners(StringUtils.EMPTY)
+                .build();
+        PaginationDto paginationDto = PaginationDto.builder()
+                .limit(5)
+                .page(1)
+                .build();
         PersonDao personDao = PersonDaoImpl.getInstance();
-        List<Person> persons = personDao.findByAttributes("", "FEMALE", "", 5, 1);
+        List<Person> persons = personDao.findByAttributes(personDto, paginationDto);
         assertEquals(2, persons.size());
     }
 }

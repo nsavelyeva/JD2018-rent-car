@@ -2,6 +2,8 @@ package com.savelyeva.dao;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
+import com.savelyeva.dto.PaginationDto;
+import com.savelyeva.dto.PersonDto;
 import com.savelyeva.model.QAddress;
 import com.savelyeva.model.QCity;
 import com.savelyeva.model.QCountry;
@@ -26,17 +28,17 @@ public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDa
     }
 
     @Override
-    public List<Person> findByAttributes(String email, String gender, String foreigners, Integer limit, Integer page) {
+    public List<Person> findByAttributes(PersonDto personDto, PaginationDto paginationDto) {
         @Cleanup Session session = getSession();
 
         BooleanBuilder predicate = new BooleanBuilder();
-        if (!StringUtils.isEmpty(email)) {
-            predicate = predicate.and(QPerson.person.email.eq(email));
+        if (!StringUtils.isEmpty(personDto.getEmail())) {
+            predicate = predicate.and(QPerson.person.email.eq(personDto.getEmail()));
         }
-        if (!StringUtils.isEmpty(gender)) {
-            predicate = predicate.and(QPersonData.personData.gender.stringValue().eq(gender));
+        if (!StringUtils.isEmpty(personDto.getGender().toString())) {
+            predicate = predicate.and(QPersonData.personData.gender.stringValue().eq(personDto.getGender().toString()));
         }
-        if (!StringUtils.isEmpty(foreigners)) {
+        if (!StringUtils.isEmpty(personDto.getForeigners())) {
             predicate = predicate.and(QCountry.country1.country.ne("Belarus"));
         }
         return new JPAQuery<Person>(session)
@@ -48,8 +50,8 @@ public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDa
                 .join(QStreet.street1.city, QCity.city1)
                 .join(QCity.city1.country, QCountry.country1)
                 .where(predicate)
-                .limit(limit)
-                .offset(limit * (page - 1))
+                .limit(paginationDto.getLimit())
+                .offset(paginationDto.getLimit() * (paginationDto.getPage() - 1))
                 .fetch();
     }
 
