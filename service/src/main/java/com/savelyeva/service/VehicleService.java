@@ -31,9 +31,9 @@ public class VehicleService {
         return vehicle;
     }
 
-    public List<Vehicle> findByAttributes(VehicleDto personDto, PaginationDto paginationDto) {
+    public List<Vehicle> findByAttributes(VehicleDto vehicleDto, PaginationDto paginationDto) {
         VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
-        List<Vehicle> vehicles = vehicleDao.findByAttributes(personDto, paginationDto);
+        List<Vehicle> vehicles = vehicleDao.findByAttributes(vehicleDto, paginationDto);
         return vehicles;
     }
 

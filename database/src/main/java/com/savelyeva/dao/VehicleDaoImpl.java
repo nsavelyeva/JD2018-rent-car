@@ -46,17 +46,6 @@ public class VehicleDaoImpl extends BaseDaoImpl<Long, Vehicle> implements Vehicl
                 .limit(paginationDto.getLimit())
                 .offset(paginationDto.getLimit() * (paginationDto.getPage() - 1))
                 .fetch();
-        /*
-        return new JPAQuery<Vehicle>(session)
-                .select(QVehicle.vehicle)
-                .from(QVehicle.vehicle)
-                .join(QVehicle.vehicle, QRent.rent.vehicle)
-                .where(predicate)
-                .limit(paginationDto.getLimit())
-                .offset(paginationDto.getLimit() * (paginationDto.getPage() - 1))
-                .fetch();
-
-         */
     }
 
 }
