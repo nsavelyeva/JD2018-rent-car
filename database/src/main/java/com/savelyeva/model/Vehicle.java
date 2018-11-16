@@ -80,13 +80,6 @@ public class Vehicle implements BaseEntity<Long> {
     )
     private List<Person> persons = new ArrayList<>();
 
-    /*@ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "rent", schema = "rent_car",
-            joinColumns = @JoinColumn(name = "vehicle_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-    )
-    private List<Rent> rents = new ArrayList<>();*/
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "vehicle")
     private List<Rent> rents = new ArrayList<>();
 
