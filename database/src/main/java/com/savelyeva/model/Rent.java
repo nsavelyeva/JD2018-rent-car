@@ -12,7 +12,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
-@ToString(exclude = {"person", "vehicle"})
+@ToString //(exclude = {"person", "vehicle"})
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
@@ -34,11 +33,11 @@ public class Rent implements BaseEntity<Long> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 

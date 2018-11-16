@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="include/begin-html.jsp" %>
 
-Person search form
-<br>
+<h2>Person search form</h2>
+
 <form>
-    <input type="text" name="email" value="">
+    E-mail: <input type="text" name="email" value="">
     <br>
-    <select name="gender">
+    Gender: <select name="gender">
         <option value="">Any</option>
         <option value="MALE">MALE</option>
         <option value="FEMALE">FEMALE</option>

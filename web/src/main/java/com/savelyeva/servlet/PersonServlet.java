@@ -16,8 +16,6 @@ public class PersonServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String limit = request.getParameter("limit");
-        String page = request.getParameter("page");
 
         List<Person> persons = PersonService.getInstance().findAll();
         request.setAttribute("elements", persons);

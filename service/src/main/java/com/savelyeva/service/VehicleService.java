@@ -1,11 +1,12 @@
 package com.savelyeva.service;
 
+import com.savelyeva.dao.VehicleDao;
+import com.savelyeva.dao.VehicleDaoImpl;
+import com.savelyeva.dto.PaginationDto;
+import com.savelyeva.dto.VehicleDto;
 import com.savelyeva.model.Vehicle;
-import com.savelyeva.connection.ConnectionManager;
 import lombok.AccessLevel;
-import lombok.Cleanup;
 import lombok.NoArgsConstructor;
-import org.hibernate.Session;
 
 import java.util.List;
 
@@ -18,9 +19,21 @@ public class VehicleService {
         return INSTANCE;
     }
 
-    public List<Vehicle> getAllVehicles() {
-        @Cleanup Session session = ConnectionManager.getFactory().openSession();
-        List<Vehicle> vehicles = session.createQuery("select v from Vehicle v", Vehicle.class).list();
+    public List<Vehicle> findAll() {
+        VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
+        List<Vehicle> vehicles = vehicleDao.findAll();
+        return vehicles;
+    }
+
+    public Vehicle find(Long id) {
+        VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
+        Vehicle vehicle = vehicleDao.find(id);
+        return vehicle;
+    }
+
+    public List<Vehicle> findByAttributes(VehicleDto personDto, PaginationDto paginationDto) {
+        VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
+        List<Vehicle> vehicles = vehicleDao.findByAttributes(personDto, paginationDto);
         return vehicles;
     }
 

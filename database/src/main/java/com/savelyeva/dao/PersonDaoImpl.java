@@ -35,8 +35,8 @@ public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDa
         if (!StringUtils.isEmpty(personDto.getEmail())) {
             predicate = predicate.and(QPerson.person.email.eq(personDto.getEmail()));
         }
-        if (!StringUtils.isEmpty(personDto.getGender().toString())) {
-            predicate = predicate.and(QPersonData.personData.gender.stringValue().eq(personDto.getGender().toString()));
+        if (!StringUtils.isEmpty(personDto.getGender())) {
+            predicate = predicate.and(QPersonData.personData.gender.stringValue().eq(personDto.getGender()));
         }
         if (!StringUtils.isEmpty(personDto.getForeigners())) {
             predicate = predicate.and(QCountry.country1.country.ne("Belarus"));

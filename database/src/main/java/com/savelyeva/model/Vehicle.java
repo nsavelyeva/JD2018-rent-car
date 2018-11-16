@@ -13,6 +13,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,12 +23,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@ToString(exclude = "persons")
+@ToString(exclude = {"persons", "rents"})
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
@@ -77,6 +79,16 @@ public class Vehicle implements BaseEntity<Long> {
             inverseJoinColumns = @JoinColumn(name = "person_id")
     )
     private List<Person> persons = new ArrayList<>();
+
+    /*@ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "rent", schema = "rent_car",
+            joinColumns = @JoinColumn(name = "vehicle_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id")
+    )
+    private List<Rent> rents = new ArrayList<>();*/
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vehicle")
+    private List<Rent> rents = new ArrayList<>();
 
     public Vehicle(Model model, Color color, Transmission transmission, Short producedYear,
                    Integer fullPrice, Integer dayPrice, Audit audit) {

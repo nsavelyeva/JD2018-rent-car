@@ -16,7 +16,8 @@ public class VehicleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Vehicle> vehicles = VehicleService.getInstance().getAllVehicles();
+
+        List<Vehicle> vehicles = VehicleService.getInstance().findAll();
         request.setAttribute("elements", vehicles);
 
         getServletContext()
