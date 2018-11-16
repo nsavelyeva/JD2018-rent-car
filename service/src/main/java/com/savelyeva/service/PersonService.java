@@ -1,26 +1,41 @@
 package com.savelyeva.service;
 
-import com.savelyeva.ConnectionManager;
+import com.savelyeva.dao.PersonDao;
+import com.savelyeva.dao.PersonDaoImpl;
+import com.savelyeva.dto.PaginationDto;
+import com.savelyeva.dto.PersonDto;
 import com.savelyeva.model.Person;
 import lombok.AccessLevel;
-import lombok.Cleanup;
 import lombok.NoArgsConstructor;
-import org.hibernate.Session;
 
 import java.util.List;
+
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PersonService {
 
     private static final PersonService INSTANCE = new PersonService();
 
-    public List<Person> getAllPersons() {
-        @Cleanup Session session = ConnectionManager.FACTORY.openSession();
-        List<Person> persons = session.createQuery("select p from Person p", Person.class).list();
-        return persons;
-    }
-
     public static PersonService getInstance() {
         return INSTANCE;
     }
+
+    public List<Person> findAll() {
+        PersonDao personDao = PersonDaoImpl.getInstance();
+        List<Person> persons = personDao.findAll();
+        return persons;
+    }
+
+    public Person find(Long id) {
+        PersonDao personDao = PersonDaoImpl.getInstance();
+        Person person = personDao.find(id);
+        return person;
+    }
+
+    public List<Person> findByAttributes(PersonDto personDto, PaginationDto paginationDto) {
+        PersonDao personDao = PersonDaoImpl.getInstance();
+        List<Person> persons = personDao.findByAttributes(personDto, paginationDto);
+        return persons;
+    }
+
 }

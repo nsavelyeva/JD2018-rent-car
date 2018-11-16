@@ -18,7 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Data
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor(staticName = "of")
@@ -49,6 +48,5 @@ public class DrivingLicense implements BaseEntity<Long> {
         this.serialNumber = serialNumber;
         this.drivingPeriod = drivingPeriod;
         this.category = category;
-
     }
 }

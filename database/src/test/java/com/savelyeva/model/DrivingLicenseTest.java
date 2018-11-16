@@ -1,11 +1,12 @@
 package com.savelyeva.model;
 
+import com.savelyeva.util.CreateTestData;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -16,24 +17,22 @@ import static org.junit.Assert.assertEquals;
 
 public class DrivingLicenseTest {
 
-    private static final SessionFactory FACTORY = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory sessionFactory;
+
+    @BeforeClass
+    public static void initDb() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        CreateTestData.getInstance().importTestData(sessionFactory);
+    }
 
     @AfterClass
     public static void closeFactory() {
-        FACTORY.close();
-    }
-
-    @Before
-    public void clean() {
-        @Cleanup Session session = FACTORY.openSession();
-        session.beginTransaction();
-        session.createQuery("DELETE FROM DrivingLicense").executeUpdate();
-        session.getTransaction().commit();
+        sessionFactory.close();
     }
 
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Audit drivingPeriod = Audit.builder()
@@ -54,14 +53,14 @@ public class DrivingLicenseTest {
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
         Audit drivingPeriod = Audit.builder()
                 .createdDate(Instant.now())
                 .updatedDate(Instant.now())
                 .build();
         DrivingLicense sessionDrivingLicense = DrivingLicense.builder()
-                .serialNumber("FF123456")
+                .serialNumber("AB123456")
                 .drivingPeriod(drivingPeriod)
                 .category(Category.B)
                 .build();

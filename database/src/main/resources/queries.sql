@@ -239,7 +239,7 @@ INSERT INTO role (role) VALUES
 
 INSERT INTO person (login, password, email, role_id, created_date) VALUES
     ('ivan1971', 'ivan1971pass', 'ivan1971@tut.by', 2, '2018-10-20'),
-    ('hannapavlova', 'pavlovahanna', 'hanna-flowe@yandex.ru', 2, '2018-10-21'),
+    ('hannapavlova', 'pavlovahanna', 'hanna-flower@yandex.ru', 2, '2018-10-21'),
     ('root', 'pass', 'superment79@tut.by', 2, '2018-10-24'),
     ('rediska', 'olga1981', 'olga1981@mail.ru', 2, '2018-10-24'),
     ('fiona', 'password', 'fiona-soup4ik@tut.by', 2, '2018-10-24'),
@@ -256,12 +256,12 @@ INSERT INTO person_data (person_id, first_name, last_name, middle_name, birth_da
     (7, 'Bart', 'Simpson', NULL, '1981-02-15', 'UNSURE_YET', 'EE123456', 6, 7);
 
 INSERT INTO rent (vehicle_id, person_id, start_date, end_date, cost, paid, created_date) VALUES
-    (1, 1, '2016-04-04', '2016-04-08', 100, TRUE, '2018-10-20'),
-    (1, 2, '2016-02-08', '2016-02-24', 220, TRUE, '2018-10-21'),
-    (3, 3, '2016-06-01', '2016-07-01', 80, TRUE, '2018-10-24'),
-    (1, 4, '2016-03-07', '2016-03-09', 90, TRUE, '2018-10-24'),
-    (4, 5, '2016-10-02', '2016-10-04', 120, TRUE, '2018-10-25'),
-    (3, 5, '2016-10-10', '2016-10-12', 150, TRUE, '2018-10-25');
+    (1, 1, '2018-04-04', '2018-04-08', 100, TRUE, '2018-10-20'),
+    (1, 2, '2018-02-08', '2018-02-24', 220, TRUE, '2018-10-21'),
+    (3, 3, '2018-06-01', '2018-07-01', 80, TRUE, '2018-10-24'),
+    (1, 4, '2018-03-07', '2018-03-09', 90, TRUE, '2018-10-24'),
+    (4, 5, '2018-11-02', '2018-12-04', 120, TRUE, '2018-10-25'),
+    (3, 5, '2018-10-10', '2018-12-30', 150, TRUE, '2018-10-25');
 
 SELECT * FROM vehicle;
 SELECT * FROM car;
@@ -278,5 +278,3 @@ SELECT * FROM person;
 SELECT * FROM person_data;
 SELECT * FROM role;
 SELECT * FROM rent;
-
-

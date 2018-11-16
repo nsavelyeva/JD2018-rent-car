@@ -16,7 +16,8 @@ public class PersonServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Person> persons = PersonService.getInstance().getAllPersons();
+
+        List<Person> persons = PersonService.getInstance().findAll();
         request.setAttribute("elements", persons);
 
         getServletContext()

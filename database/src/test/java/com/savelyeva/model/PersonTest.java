@@ -1,11 +1,12 @@
 package com.savelyeva.model;
 
+import com.savelyeva.util.CreateTestData;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -16,36 +17,32 @@ import static org.junit.Assert.assertEquals;
 
 public class PersonTest {
 
-    private static final SessionFactory FACTORY = new Configuration().configure().buildSessionFactory();
+    private static SessionFactory sessionFactory;
+
+    @BeforeClass
+    public static void initDb() {
+        sessionFactory = new Configuration().configure().buildSessionFactory();
+        CreateTestData.getInstance().importTestData(sessionFactory);
+    }
 
     @AfterClass
     public static void closeFactory() {
-        FACTORY.close();
-    }
-
-    @Before
-    public void clean() {
-        @Cleanup Session session = FACTORY.openSession();
-        session.beginTransaction();
-        session.createQuery("DELETE FROM Person").executeUpdate();
-        session.createQuery("DELETE FROM Role").executeUpdate();
-        session.getTransaction().commit();
+        sessionFactory.close();
     }
 
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Audit audit =  Audit.builder().createdDate(Instant.now()).build();
-        Role role = Role.builder().role("Администратор").build();
-        session.save(role);
+        Role role = session.find(Role.class, 1);
 
-        Person sessionPerson =  Person.builder()
+        Person sessionPerson = Person.builder()
                 .role(role)
-                .login("person")
+                .login("user")
                 .password("secret")
-                .email("person@example.com")
+                .email("user@example.com")
                 .audit(audit)
                 .build();
         Serializable savedId = session.save(sessionPerson);
@@ -57,12 +54,11 @@ public class PersonTest {
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = FACTORY.openSession();
+        @Cleanup Session session = sessionFactory.openSession();
         session.beginTransaction();
 
         Audit audit =  Audit.builder().createdDate(Instant.now()).build();
-        Role role = Role.builder().role("Пользователь").build();
-        session.save(role);
+        Role role = session.find(Role.class, 1);
 
         Person sessionPerson =  Person.builder()
                 .role(role)
