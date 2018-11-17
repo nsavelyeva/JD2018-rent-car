@@ -1,22 +1,10 @@
 package com.savelyeva.model;
 
-import com.savelyeva.util.CreateTestData;
-import lombok.Cleanup;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.io.Serializable;
-import java.time.Instant;
-
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 public class DrivingLicenseTest {
-
+/*
     private static SessionFactory sessionFactory;
 
     @BeforeClass
@@ -73,5 +61,5 @@ public class DrivingLicenseTest {
         session.getTransaction().commit();
 
         assertEquals(sessionDrivingLicense, databaseDrivingLicense);
-    }
+    }*/
 }

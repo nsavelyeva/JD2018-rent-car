@@ -14,19 +14,11 @@ import org.hibernate.Session;
 import java.time.Instant;
 import java.util.List;
 
-import static com.savelyeva.connection.ConnectionManager.getSession;
-
 public class VehicleDaoImpl extends BaseDaoImpl<Long, Vehicle> implements VehicleDao {
-
-    private static final VehicleDao INSTANCE = new VehicleDaoImpl();
-
-    public static VehicleDao getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public List<Vehicle> findByAttributes(VehicleDto vehicleDto, PaginationDto paginationDto) {
-        @Cleanup Session session = getSession();
+        Session session = this.getSessionFactory().getCurrentSession();
 
         BooleanBuilder predicate = new BooleanBuilder();
         if (!StringUtils.isEmpty(vehicleDto.getDayPrice())) {

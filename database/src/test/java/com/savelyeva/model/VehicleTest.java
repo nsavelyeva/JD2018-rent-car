@@ -1,45 +1,41 @@
 package com.savelyeva.model;
 
-import com.savelyeva.util.CreateTestData;
-import lombok.Cleanup;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.List;
-
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 public class VehicleTest {
+/*
+    @Autowired
+    private VehicleDao vehicleDao;
 
-    private static SessionFactory sessionFactory;
+    @Autowired
+    private CarDao carDao;
+
+    @Autowired
+    private LorryDao lorryDao;
+
+    @Autowired
+    private ModelDao modelDao;
+
+
+    @Autowired
+    private ColorDao colorDao;
 
     @BeforeClass
     public static void initDb() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-        CreateTestData.getInstance().importTestData(sessionFactory);
+        CreateTestData.getInstance().importTestData();
     }
 
     @AfterClass
     public static void closeFactory() {
-        sessionFactory.close();
+        //sessionFactory.close();
     }
-
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
         Audit audit = new Audit(Instant.now());
-        Color color = session.find(Color.class, 1);
-        Model modelCar = session.find(Model.class, 1);
-        Model modelLorry = session.find(Model.class, 2);
+        Color color = colorDao.find(1).get();
+        Model modelCar = modelDao.find(1).get();
+        Model modelLorry = modelDao.find(2).get();
 
         Vehicle vehicleCar = new Vehicle(modelCar, color, Transmission.AUTOMATIC, Short.valueOf("2017"), 12000, 60, audit);
         session.save(vehicleCar);
@@ -53,17 +49,12 @@ public class VehicleTest {
         Serializable savedCarId = session.save(car);
         Serializable savedLorryId = session.save(lorry);
 
-        session.getTransaction().commit();
-
         assertNotNull(savedCarId);
         assertNotNull(savedLorryId);
     }
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
         Audit audit = new Audit(Instant.now());
         Color color = session.find(Color.class, 1);
         Model modelCar = session.find(Model.class, 1);
@@ -90,10 +81,8 @@ public class VehicleTest {
 
         List<Vehicle> databaseVehicles = session.createQuery("select e from Vehicle e", Vehicle.class).list();
 
-        session.getTransaction().commit();
-
         for (int i = 0; i < databaseVehicles.size(); i++) {
             assertEquals(sessionVehicles.get(i), databaseVehicles.get(i));
         }
-    }
+    }*/
 }

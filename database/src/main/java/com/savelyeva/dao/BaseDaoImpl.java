@@ -1,59 +1,57 @@
 package com.savelyeva.dao;
 
 import com.savelyeva.model.BaseEntity;
-import lombok.Cleanup;
+import lombok.Getter;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.GenericTypeResolver;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Optional;
 
-import static com.savelyeva.connection.ConnectionManager.getSession;
 
+@Getter
 public abstract class BaseDaoImpl<P extends Serializable, E extends BaseEntity<P>> implements BaseDao<P, E> {
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     private Class<E> clazz;
 
     @SuppressWarnings("unchecked")
     public BaseDaoImpl() {
-        ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
-        this.clazz = (Class<E>) type.getActualTypeArguments()[1];
+        this.clazz = (Class<E>) GenericTypeResolver.resolveTypeArguments(getClass(), BaseDaoImpl.class)[1];
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public P save(E entity) {
-        @Cleanup Session session = getSession();
-        return (P) session.save(entity);
+        return (P) sessionFactory.getCurrentSession().save(entity);
     }
 
     @Override
     public void update(E entity) {
-        @Cleanup Session session = getSession();
-        session.beginTransaction();
-        session.update(entity);
-        session.getTransaction().commit();
+        sessionFactory.getCurrentSession().update(entity);
     }
 
     @Override
     public void delete(E entity) {
-        @Cleanup Session session = getSession();
-        session.beginTransaction();
-        session.delete(entity);
-        session.getTransaction().commit();
+        sessionFactory.getCurrentSession().delete(entity);
     }
 
     @Override
-    public E find(P id) {
-        @Cleanup Session session = getSession();
-        return session.find(clazz, id);
+    public Optional<E> find(P id) {
+        return Optional.ofNullable(sessionFactory.getCurrentSession().find(clazz, id));
     }
 
     @Override
     public List<E> findAll() {
-        @Cleanup Session session = getSession();
+        Session session = sessionFactory.getCurrentSession();
+
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<E> criteria = cb.createQuery(clazz);
 

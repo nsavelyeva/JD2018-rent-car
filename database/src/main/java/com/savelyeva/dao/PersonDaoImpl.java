@@ -11,25 +11,20 @@ import com.savelyeva.model.QPerson;
 import com.savelyeva.model.Person;
 import com.savelyeva.model.QPersonData;
 import com.savelyeva.model.QStreet;
-import lombok.Cleanup;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.savelyeva.connection.ConnectionManager.getSession;
-
+@Repository
 public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDao {
-
-    private static final PersonDao INSTANCE = new PersonDaoImpl();
-
-    public static PersonDao getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public List<Person> findByAttributes(PersonDto personDto, PaginationDto paginationDto) {
-        @Cleanup Session session = getSession();
+        Session session = this.getSessionFactory().getCurrentSession();
 
         BooleanBuilder predicate = new BooleanBuilder();
         if (!StringUtils.isEmpty(personDto.getEmail())) {

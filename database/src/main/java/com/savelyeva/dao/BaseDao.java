@@ -4,6 +4,7 @@ import com.savelyeva.model.BaseEntity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public interface BaseDao<P extends Serializable, E extends BaseEntity<P>> {
 
@@ -13,7 +14,7 @@ public interface BaseDao<P extends Serializable, E extends BaseEntity<P>> {
 
     void delete(E entity);
 
-    E find(P id);
+    Optional<E> find(P id);
 
     List<E> findAll();
 }
