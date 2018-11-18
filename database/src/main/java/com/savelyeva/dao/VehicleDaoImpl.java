@@ -7,13 +7,14 @@ import com.savelyeva.dto.VehicleDto;
 import com.savelyeva.model.QRent;
 import com.savelyeva.model.QVehicle;
 import com.savelyeva.model.Vehicle;
-import lombok.Cleanup;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
 
+@Repository
 public class VehicleDaoImpl extends BaseDaoImpl<Long, Vehicle> implements VehicleDao {
 
     @Override

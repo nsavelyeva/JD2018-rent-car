@@ -4,8 +4,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.savelyeva.model.Role;
 import com.savelyeva.model.QRole;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 

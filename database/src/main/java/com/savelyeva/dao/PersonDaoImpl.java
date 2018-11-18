@@ -13,8 +13,6 @@ import com.savelyeva.model.QPersonData;
 import com.savelyeva.model.QStreet;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

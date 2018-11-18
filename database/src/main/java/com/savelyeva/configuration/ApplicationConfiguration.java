@@ -26,7 +26,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public DataSource dataSource(@Value("${db.url}") String url,
-                                 @Value("${db.username") String username,
+                                 @Value("${db.username}") String username,
                                  @Value("${db.password}") String password,
                                  @Value("${db.driverName}") String driverName) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
