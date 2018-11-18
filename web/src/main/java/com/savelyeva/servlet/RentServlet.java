@@ -1,7 +1,9 @@
 package com.savelyeva.servlet;
 
 import com.savelyeva.model.Rent;
+import com.savelyeva.service.DrivingLicenseService;
 import com.savelyeva.service.RentService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +16,12 @@ import java.util.List;
 @WebServlet("/rents")
 public class RentServlet extends HttpServlet {
 
+    @Autowired
+    private RentService rentService;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Rent> rents = RentService.getInstance().getAllRents();
+        List<Rent> rents = rentService.getAllRents();
         request.setAttribute("elements", rents);
 
         getServletContext()

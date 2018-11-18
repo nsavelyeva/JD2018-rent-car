@@ -1,27 +1,27 @@
 package com.savelyeva.service;
 
+import com.savelyeva.dao.AddressDao;
 import com.savelyeva.model.Address;
-import com.savelyeva.connection.ConnectionManager;
-import lombok.AccessLevel;
-import lombok.Cleanup;
-import lombok.NoArgsConstructor;
-import org.hibernate.Session;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AddressService {
 
-    private static final AddressService INSTANCE = new AddressService();
+    @Autowired
+    private AddressService addressService;
 
-    public static AddressService getInstance() {
-        return INSTANCE;
-    }
+    private final AddressDao addressDao;
 
+    @Transactional
     public List<Address> getAllAddresses() {
-        @Cleanup Session session = ConnectionManager.getFactory().openSession();
-        List<Address> addresses = session.createQuery("select a from Address a", Address.class).list();
-        return addresses;
+        return addressDao.findAll();
     }
 
 }

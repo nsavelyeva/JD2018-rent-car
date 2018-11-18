@@ -1,40 +1,38 @@
 package com.savelyeva.service;
 
 import com.savelyeva.dao.VehicleDao;
-import com.savelyeva.dao.VehicleDaoImpl;
 import com.savelyeva.dto.PaginationDto;
 import com.savelyeva.dto.VehicleDto;
 import com.savelyeva.model.Vehicle;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class VehicleService {
 
-    private static final VehicleService INSTANCE = new VehicleService();
+    @Autowired
+    private VehicleService vehicleService;
 
-    public static VehicleService getInstance() {
-        return INSTANCE;
-    }
+    private final VehicleDao vehicleDao;
 
+    @Transactional
     public List<Vehicle> findAll() {
-        VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
-        List<Vehicle> vehicles = vehicleDao.findAll();
-        return vehicles;
+        return vehicleDao.findAll();
     }
 
-    public Vehicle find(Long id) {
-        VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
-        Vehicle vehicle = vehicleDao.find(id);
-        return vehicle;
+    public Optional<Vehicle> find(Long id) {
+        return vehicleDao.find(id);
     }
 
     public List<Vehicle> findByAttributes(VehicleDto vehicleDto, PaginationDto paginationDto) {
-        VehicleDao vehicleDao = VehicleDaoImpl.getInstance();
-        List<Vehicle> vehicles = vehicleDao.findByAttributes(vehicleDto, paginationDto);
-        return vehicles;
+        return vehicleDao.findByAttributes(vehicleDto, paginationDto);
     }
 
 }

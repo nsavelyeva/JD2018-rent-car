@@ -2,6 +2,8 @@ package com.savelyeva.servlet;
 
 import com.savelyeva.model.DrivingLicense;
 import com.savelyeva.service.DrivingLicenseService;
+import com.savelyeva.service.LorryService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +16,12 @@ import java.util.List;
 @WebServlet("/drivinglicenses")
 public class DrivingLicenseServlet extends HttpServlet {
 
+    @Autowired
+    private DrivingLicenseService drivingLicenseService;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<DrivingLicense> drivingLicenses = DrivingLicenseService.getInstance().getAllDrivingLicenses();
+        List<DrivingLicense> drivingLicenses = drivingLicenseService.getAllDrivingLicenses();
         request.setAttribute("elements", drivingLicenses);
 
         getServletContext()

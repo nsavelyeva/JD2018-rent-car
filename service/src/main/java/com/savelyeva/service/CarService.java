@@ -7,28 +7,37 @@ import com.savelyeva.connection.ConnectionManager;
 import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CarService {
 
-    private static final CarService INSTANCE = new CarService();
+    @Autowired
+    private CarService carService;
 
-    public static CarService getInstance() {
-        return INSTANCE;
-    }
+    private final CarDao carDao;
 
+    /*@Transactional
+    public Long save(Car car) {
+        return carDao.save(car);
+    }*/
+
+    @Transactional
     public List<Car> getAllCars() {
-        @Cleanup Session session = ConnectionManager.getFactory().openSession();
-        List<Car> cars = session.createQuery("select c from Car c", Car.class).list();
-        return cars;
+        return carDao.findAll();
     }
 
-    public Car find(Long id) {
-        CarDao carDao = CarDaoImpl.getInstance();
-        Car car = carDao.find(id);
-        return car;
+    @Transactional
+    public Optional<Car> find(Long id) {
+        return carDao.find(id);
     }
 }

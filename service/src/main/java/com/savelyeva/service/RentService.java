@@ -1,27 +1,27 @@
 package com.savelyeva.service;
 
+import com.savelyeva.dao.RentDao;
 import com.savelyeva.model.Rent;
-import com.savelyeva.connection.ConnectionManager;
-import lombok.AccessLevel;
-import lombok.Cleanup;
-import lombok.NoArgsConstructor;
-import org.hibernate.Session;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RentService {
 
-    private static final RentService INSTANCE = new RentService();
+    @Autowired
+    private RentService rentService;
 
-    public static RentService getInstance() {
-        return INSTANCE;
-    }
+    private final RentDao rentDao;
 
+    @Transactional
     public List<Rent> getAllRents() {
-        @Cleanup Session session = ConnectionManager.getFactory().openSession();
-        List<Rent> rents = session.createQuery("select r from Rent r", Rent.class).list();
-        return rents;
+        return rentDao.findAll();
     }
 
 }

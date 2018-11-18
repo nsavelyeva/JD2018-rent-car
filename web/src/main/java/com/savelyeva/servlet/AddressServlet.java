@@ -2,6 +2,7 @@ package com.savelyeva.servlet;
 
 import com.savelyeva.model.Address;
 import com.savelyeva.service.AddressService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +15,12 @@ import java.util.List;
 @WebServlet("/addresses")
 public class AddressServlet extends HttpServlet {
 
+    @Autowired
+    private AddressService addressService;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Address> addresses = AddressService.getInstance().getAllAddresses();
+        List<Address> addresses = addressService.getAllAddresses();
         request.setAttribute("elements", addresses);
 
         getServletContext()

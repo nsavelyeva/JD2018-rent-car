@@ -1,41 +1,41 @@
 package com.savelyeva.service;
 
 import com.savelyeva.dao.PersonDao;
-import com.savelyeva.dao.PersonDaoImpl;
 import com.savelyeva.dto.PaginationDto;
 import com.savelyeva.dto.PersonDto;
 import com.savelyeva.model.Person;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
 
-    private static final PersonService INSTANCE = new PersonService();
+    @Autowired
+    private PersonService personService;
 
-    public static PersonService getInstance() {
-        return INSTANCE;
-    }
+    private final PersonDao personDao;
 
+    @Transactional
     public List<Person> findAll() {
-        PersonDao personDao = PersonDaoImpl.getInstance();
-        List<Person> persons = personDao.findAll();
-        return persons;
+        return personDao.findAll();
     }
 
-    public Person find(Long id) {
-        PersonDao personDao = PersonDaoImpl.getInstance();
-        Person person = personDao.find(id);
-        return person;
+    @Transactional
+    public Optional<Person> find(Long id) {
+        return personDao.find(id);
     }
 
+    @Transactional
     public List<Person> findByAttributes(PersonDto personDto, PaginationDto paginationDto) {
-        PersonDao personDao = PersonDaoImpl.getInstance();
-        List<Person> persons = personDao.findByAttributes(personDto, paginationDto);
-        return persons;
+        return personDao.findByAttributes(personDto, paginationDto);
     }
 
 }

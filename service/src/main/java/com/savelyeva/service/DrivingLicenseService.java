@@ -1,27 +1,27 @@
 package com.savelyeva.service;
 
+import com.savelyeva.dao.DrivingLicenseDao;
 import com.savelyeva.model.DrivingLicense;
-import com.savelyeva.connection.ConnectionManager;
-import lombok.AccessLevel;
-import lombok.Cleanup;
-import lombok.NoArgsConstructor;
-import org.hibernate.Session;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DrivingLicenseService {
 
-    private static final DrivingLicenseService INSTANCE = new DrivingLicenseService();
+    @Autowired
+    private DrivingLicenseService drivingLicenseService;
 
-    public static DrivingLicenseService getInstance() {
-        return INSTANCE;
-    }
+    private final DrivingLicenseDao drivingLicenseDao;
 
+    @Transactional
     public List<DrivingLicense> getAllDrivingLicenses() {
-        @Cleanup Session session = ConnectionManager.getFactory().openSession();
-        List<DrivingLicense> drivingLicenses = session.createQuery("select d from DrivingLicense d", DrivingLicense.class).list();
-        return drivingLicenses;
+        return drivingLicenseDao.findAll();
     }
 
 }
