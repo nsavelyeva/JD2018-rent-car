@@ -1,4 +1,4 @@
-package com.savelyeva.configuration;
+package com.savelyeva.database.configuration;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +41,7 @@ public class DatabaseConfiguration {
                                                   Properties hibernateProperties) {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setPackagesToScan("com.savelyeva");
+        factoryBean.setPackagesToScan("com.savelyeva.database");
         factoryBean.setHibernateProperties(hibernateProperties);
 
         return factoryBean;

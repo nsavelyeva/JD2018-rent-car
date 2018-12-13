@@ -4,10 +4,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.savelyeva.database.model.Role;
 import com.savelyeva.database.model.QRole;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RoleDaoImpl extends BaseDaoImpl<Integer, Role> implements RoleDao {
 
     @Override

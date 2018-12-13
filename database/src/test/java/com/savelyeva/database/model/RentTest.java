@@ -1,26 +1,57 @@
-package com.savelyeva.model;
+package com.savelyeva.database.model;
 
+import com.savelyeva.database.configuration.DatabaseConfiguration;
+import com.savelyeva.database.dao.RentDaoImpl;
+import com.savelyeva.database.data.CreateTestData;
+import com.savelyeva.database.util.ApplicationContextHolder;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.time.Duration;
+import java.time.Instant;
+
+import static java.lang.Boolean.TRUE;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {DatabaseConfiguration.class})
+@Transactional
 public class RentTest {
-/*
+
+    @Autowired
+    private static CreateTestData testData;
+
     private static SessionFactory sessionFactory;
+
+    private static Session session;
 
     @BeforeClass
     public static void initDb() {
-        sessionFactory = new Configuration().configure().buildSessionFactory();
-        CreateTestData.getInstance().importTestData(sessionFactory);
+        RentDaoImpl rentDaoImpl = ApplicationContextHolder.getBean("rentDaoImpl", RentDaoImpl.class);
+        sessionFactory = rentDaoImpl.getSessionFactory();
+        testData = ApplicationContextHolder.getBean("createTestData", CreateTestData.class);
+        testData.importTestData();
     }
 
     @AfterClass
     public static void closeFactory() {
-        sessionFactory.close();
+        //sessionFactory.close();
+        //testData.removeTestData(sessionFactory);
     }
 
     @Test
     public void checkSaveEntity() {
-        @Cleanup Session session = sessionFactory.openSession();
+        session = sessionFactory.getCurrentSession();
         session.beginTransaction();
 
         Instant now = Instant.now();
@@ -48,7 +79,7 @@ public class RentTest {
 
     @Test
     public void checkGetById() {
-        @Cleanup Session session = sessionFactory.openSession();
+        session = sessionFactory.getCurrentSession();
         session.beginTransaction();
 
         Instant now = Instant.now();
@@ -76,5 +107,5 @@ public class RentTest {
         session.getTransaction().commit();
 
         assertEquals(sessionRent, databaseRent);
-    }*/
+    }
 }

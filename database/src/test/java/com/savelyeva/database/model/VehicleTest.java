@@ -1,41 +1,62 @@
-package com.savelyeva.model;
+package com.savelyeva.database.model;
+
+import com.savelyeva.database.configuration.DatabaseConfiguration;
+import com.savelyeva.database.dao.VehicleDaoImpl;
+import com.savelyeva.database.data.CreateTestData;
+import com.savelyeva.database.util.ApplicationContextHolder;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {DatabaseConfiguration.class})
+@Transactional
 public class VehicleTest {
-/*
-    @Autowired
-    private VehicleDao vehicleDao;
 
     @Autowired
-    private CarDao carDao;
+    private static CreateTestData testData;
 
-    @Autowired
-    private LorryDao lorryDao;
+    private static SessionFactory sessionFactory;
 
-    @Autowired
-    private ModelDao modelDao;
-
-
-    @Autowired
-    private ColorDao colorDao;
+    private static Session session;
 
     @BeforeClass
     public static void initDb() {
-        CreateTestData.getInstance().importTestData();
+        VehicleDaoImpl vehicleDaoImpl = ApplicationContextHolder.getBean("vehicleDaoDaoImpl", VehicleDaoImpl.class);
+        sessionFactory = vehicleDaoImpl.getSessionFactory();
+        testData = ApplicationContextHolder.getBean("createTestData", CreateTestData.class);
+        testData.importTestData();
     }
 
     @AfterClass
     public static void closeFactory() {
         //sessionFactory.close();
+        //testData.removeTestData(sessionFactory);
     }
+
     @Test
     public void checkSaveEntity() {
+        session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+
         Audit audit = new Audit(Instant.now());
-        Color color = colorDao.find(1).get();
-        Model modelCar = modelDao.find(1).get();
-        Model modelLorry = modelDao.find(2).get();
+        Color color = session.find(Color.class, 1);
+        Model modelCar = session.find(Model.class, 1);
+        Model modelLorry = session.find(Model.class, 2);
 
         Vehicle vehicleCar = new Vehicle(modelCar, color, Transmission.AUTOMATIC, Short.valueOf("2017"), 12000, 60, audit);
         session.save(vehicleCar);
@@ -55,6 +76,8 @@ public class VehicleTest {
 
     @Test
     public void checkGetById() {
+        session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
         Audit audit = new Audit(Instant.now());
         Color color = session.find(Color.class, 1);
         Model modelCar = session.find(Model.class, 1);
@@ -84,5 +107,5 @@ public class VehicleTest {
         for (int i = 0; i < databaseVehicles.size(); i++) {
             assertEquals(sessionVehicles.get(i), databaseVehicles.get(i));
         }
-    }*/
+    }
 }

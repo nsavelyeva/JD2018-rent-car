@@ -13,11 +13,14 @@ import com.savelyeva.database.model.QPersonData;
 import com.savelyeva.database.model.QStreet;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PersonDaoImpl extends BaseDaoImpl<Long, Person> implements PersonDao {
 
     @Override

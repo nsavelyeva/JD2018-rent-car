@@ -1,13 +1,10 @@
-package com.savelyeva.util;
+package com.savelyeva.database.data;
 
-import com.savelyeva.database.configuration.DatabaseConfiguration;
+import com.savelyeva.database.dao.CountryDao;
 import com.savelyeva.database.dao.AddressDao;
-import com.savelyeva.database.dao.CarDao;
 import com.savelyeva.database.dao.CityDao;
 import com.savelyeva.database.dao.ColorDao;
-import com.savelyeva.database.dao.CountryDao;
 import com.savelyeva.database.dao.DrivingLicenseDao;
-import com.savelyeva.database.dao.LorryDao;
 import com.savelyeva.database.dao.ManufacturerDao;
 import com.savelyeva.database.dao.ModelDao;
 import com.savelyeva.database.dao.PersonDao;
@@ -28,30 +25,21 @@ import com.savelyeva.database.model.Person;
 import com.savelyeva.database.model.PersonData;
 import com.savelyeva.database.model.Role;
 import com.savelyeva.database.model.Street;
-import lombok.NoArgsConstructor;
-import org.junit.runner.RunWith;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
-@NoArgsConstructor //(access = AccessLevel.PRIVATE)
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {DatabaseConfiguration.class})
-@Transactional
+
+@Component
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CreateTestData {
-
-    /*private static CreateTestData INSTANCE = new CreateTestData();
-
-    public static CreateTestData getInstance() {
-        return INSTANCE;
-    }*/
-    @Value("classpath:database.properties")
-    private Resource resource;
 
     @Autowired
     private PersonDao personDao;
@@ -61,12 +49,6 @@ public class CreateTestData {
 
     @Autowired
     private RoleDao roleDao;
-
-    @Autowired
-    private CarDao carDao;
-
-    @Autowired
-    private LorryDao lorryDao;
 
     @Autowired
     private ModelDao modelDao;
@@ -93,6 +75,7 @@ public class CreateTestData {
     private AddressDao addressDao;
 
     public void importTestData() {
+
         Country country = Country.builder().country("The Netherlands").build();
         countryDao.save(country);
 
@@ -170,5 +153,38 @@ public class CreateTestData {
                 .category(Category.B)
                 .build();
         drivingLicenseDao.save(drivingLicense);
+    }
+
+    public void removeTestData(SessionFactory sessionFactory) {
+        //Session session = sessionFactory.openSession();
+        //session.beginTransaction();
+        //session.createSQLQuery("DROP TABLE IF EXISTS rent, car, lorry, vehicle, color, model, manufacturer, person_data, person, driving_license, role, address, street, city, country CASCADE").executeUpdate();
+        //System.out.println("XX");
+        /*System.out.println(session.createQuery("select e from Country e").list());
+        System.out.println("YY");
+        System.out.println(session.createNativeQuery("SHOW TABLES").getResultList());
+        System.out.println("ZZ");
+        session.createNativeQuery("TRUNCATE TABLE Country;").executeUpdate();
+        System.out.println("AA");
+        */
+        //session.createSQLQuery("alter sequence * restart with 1").executeUpdate();
+        //session.createSQLQuery("SHUTDOWN;").executeUpdate();
+        //session.createSQLQuery("DROP ALL OBJECTS;").executeUpdate();
+        //session.createNativeQuery("DROP SCHEMA IF EXISTS rent_car CASCADE;").executeUpdate();
+        //session.createNativeQuery("CREATE SCHEMA IF NOT EXISTS rent_car;").executeUpdate();
+        //session.createSQLQuery("SET DB_CLOSE_DELAY=-1;").executeUpdate();
+        /*session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        session.createSQLQuery("DROP SCHEMA IF EXISTS rent_car");
+        * /
+        * //ALTER SEQUENCE SEQ_ID RESTART WITH 1000
+        session.getTransaction().commit();
+        session.close();*/
     }
 }

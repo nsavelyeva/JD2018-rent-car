@@ -1,12 +1,13 @@
-package com.savelyeva.dao;
+package com.savelyeva.database.dao;
 
-import com.savelyeva.configuration.ApplicationConfiguration;
-import com.savelyeva.dto.PaginationDto;
-import com.savelyeva.dto.PersonDto;
-import com.savelyeva.model.Audit;
-import com.savelyeva.model.Person;
-import com.savelyeva.model.Role;
-import com.savelyeva.util.CreateTestData;
+import com.savelyeva.database.configuration.DatabaseConfiguration;
+import com.savelyeva.database.data.CreateTestData;
+import com.savelyeva.database.dto.PaginationDto;
+import com.savelyeva.database.dto.PersonDto;
+import com.savelyeva.database.model.Audit;
+import com.savelyeva.database.model.Person;
+import com.savelyeva.database.model.Role;
+import com.savelyeva.database.util.ApplicationContextHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -14,8 +15,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +24,19 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ApplicationConfiguration.class})
+@ContextConfiguration(classes = {DatabaseConfiguration.class})
 @Transactional
+//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonDaoTest {
+
+    @Autowired
+    private static CreateTestData testData;
 
     @Autowired
     private PersonDao personDao;
@@ -40,40 +44,28 @@ public class PersonDaoTest {
     @Autowired
     private RoleDao roleDao;
 
-    @Value("classpath:database.properties")
-    private Resource resource;
-
-    /*@Value("${db.username}")
-    private String username;*/
-
     @BeforeClass
     public static void initDb() {
-        //CreateTestData.getInstance().importTestData();
-        //CreateTestData testData =
-                new CreateTestData().importTestData();
-
+        testData = ApplicationContextHolder.getBean("createTestData", CreateTestData.class);
+        testData.importTestData();
     }
 
     @AfterClass
     public static void closeFactory() {
-        //sessionFactory.close();
+        // sessionFactory.close();
     }
 
     @Test
     public void checkContext() {
         Assert.assertNotNull(personDao);
-        System.out.println();
     }
 
     @Test
     public void checkSave() {
         Audit audit =  Audit.builder().createdDate(Instant.now()).build();
-        //Role role = roleDao.find(1).get();
-        Role role = Role.builder().role("abc").build();
-        roleDao.save(role);
-
+        Optional<Role> role = roleDao.find(1);
         Person person = Person.builder()
-                .role(role)
+                .role(role.isPresent() ? role.get() : null)
                 .login("user")
                 .password("secret")
                 .email("user@example.com")
@@ -89,13 +81,15 @@ public class PersonDaoTest {
 
     @Test
     public void checkUpdate() {
-        Person person = personDao.find(1L).get();
+        Optional<Person> personOptional = personDao.find(2L);
+        Person person = personOptional.isPresent() ? personOptional.get() : null;
         String oldPassword = person.getPassword();
         String newPassword = oldPassword + "updated";
         person.setPassword(newPassword);
 
         personDao.update(person);
-        Person personUpdated = personDao.find(1L).get();
+        Optional<Person> personOptionalUpdated = personDao.find(2L);
+        Person personUpdated = personOptionalUpdated.isPresent() ? personOptionalUpdated.get() : null;
 
         assertEquals(personUpdated.getPassword(), newPassword);
     }
@@ -103,9 +97,9 @@ public class PersonDaoTest {
     @Test
     public void checkDelete() {
         Audit audit =  Audit.builder().createdDate(Instant.now()).build();
-        Role role = roleDao.find(1).get();
+        Optional<Role> role = roleDao.find(1);
         Person person = Person.builder()
-                .role(role)
+                .role(role.isPresent() ? role.get() : null)
                 .login("user")
                 .password("secret")
                 .email("user@example.com")
@@ -117,7 +111,7 @@ public class PersonDaoTest {
         personDao.delete(personFound.get());
 
         Optional<Person> deletedPerson = personDao.find((Long) savedId);
-        assertNull(deletedPerson.get());
+        assertFalse(deletedPerson.isPresent());
     }
 
     @Test

@@ -9,12 +9,15 @@ import com.savelyeva.database.model.QVehicle;
 import com.savelyeva.database.model.Vehicle;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
 
 @Repository
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class VehicleDaoImpl extends BaseDaoImpl<Long, Vehicle> implements VehicleDao {
 
     @Override
